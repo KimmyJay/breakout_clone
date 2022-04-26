@@ -67,6 +67,7 @@ class wall():
 
             #append the row to the full list of blocks
             self.blocks.append(block_row)
+            print(self.blocks)
 
 
     def draw_wall(self):
@@ -154,7 +155,7 @@ class game_ball():
             for item in row:
                 #if ball(self.rect) collides w/ brick(rect(item[0]))
                 if self.rect.colliderect(item[0]):
-                    #if collision occurs from bottom of of ball/top of block and ball is moving downwards
+                    #if collision occurs from bottom of ball/top of block and ball is moving downwards
                     if abs(self.rect.bottom - item[0].top) < collision_thresh and self.speed_y > 0:
                         self.speed_y *= -1
                     #if collision occurs from top of ball/bottom of block and ball is moving upwards
@@ -168,22 +169,21 @@ class game_ball():
                         self.speed_x *= -1
 
                     #reduce block strength upon collision
-                    #use row counter and item counter for checking index of particular block
+                    #use row counter and item counter for to access individual block from master block list
                     #row_count and item_count both start at 0 such that we start from the first block in the list
                     if wall.blocks[row_count][item_count][1] > 1:
                          wall.blocks[row_count][item_count][1] -= 1
                     #break block if strengh < 1
-                    #instead of deleting block, we update the block's properties to be void
-                    #deleting block will interfere w 
+                    #instead of deleting block, we update the block's properties to be void such that it will be erased from screen
                     else:
                         wall.blocks[row_count][item_count][0] = (0, 0, 0, 0)
 
                 #check if block still exists, in which case the wall is not destroyed
                 if wall.blocks[row_count][item_count][0] != (0, 0, 0, 0):
                     wall_destroyed = 0
-                #increase item counter
+                #increase item counter to move on to next block/item
                 item_count += 1
-            #increase row counter
+            #increase row counter to move on to next row
             row_count += 1
         #after iterating through all the blocks, check if the wall is destroyed
         if wall_destroyed == 1:
@@ -215,7 +215,7 @@ class game_ball():
                 self.speed_x += player_paddle.direction
                 #restrict ball from exceeding max speed
                 if self.speed_x > self.speed_max:
-                    self.speed_x > self.speed_max
+                    self.speed_x = self.speed_max
                 #restrict ball from exceeding max speed when moving leftwards
                 elif self.speed_x < 0 and self.speed_x < -self.speed_max:
                     self.speed_x = -self.speed_max
